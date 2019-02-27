@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: turbines-signals-ingestion
+  labels:
+    app: turbines-signals-ingestion
+  annotations:
+    prometheus.io/scrape: 'true'
+    prometheus.io/port: '9102'
+    
+spec:
+  replicas: 3
+  serviceName: "turbines-signals-ingestion"
+  selector:
+    matchLabels:
+      app: turbineSignals
+  template:
+    metadata:
+      labels:
+        app: turbineSignals
+    spec:
+      containers:
+        - image: gcr.io/casestudy/signals-ingestion
+          name: turbines-signals-ingestion
+          env:
+          - name: APIURL
+            value: "customer-api.default.svc.cluster.local"
+          - name: SITE_ID
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.name
+          volumeMounts:
+            - name: turbine-signals-persistent-storage
+              mountPath: /var
+              
+  volumeClaimTemplates:
+  - metadata:
+      name: turbine-signals-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi
+
+
+
+
+

@@ -1,0 +1,6 @@
+prometheus_client
+flask
+flask_sqlalchemy
+pymysql
+gunicorn
+gevent
