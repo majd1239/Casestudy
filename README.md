@@ -8,4 +8,4 @@ The pipeline is made of four components.
 
 3) Persistance Streaming DataFlow pipeline that stores the data in BQ table and mySQL tables
 
-4) API that provides the 
+4) API that serves the data
